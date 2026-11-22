@@ -1,0 +1,168 @@
+{
+  "schema": "ae/repo-intro-story/1",
+  "repo": "NousResearch/hermes-agent",
+  "seed": 42,
+  "data_schema": "ae/github-org-activity/1",
+  "picture_s": 43.5,
+  "voices": [
+    "M2/hermes",
+    "F2/nous"
+  ],
+  "stats": [
+    {
+      "id": "commits",
+      "label": "commits so far",
+      "unit": "commits",
+      "source": "total_commits",
+      "granularity": "cumulative"
+    },
+    {
+      "id": "active",
+      "label": "active weeks",
+      "unit": "weeks",
+      "source": "active_weeks",
+      "granularity": "weekly"
+    },
+    {
+      "id": "weeks",
+      "label": "weeks",
+      "unit": "weeks",
+      "source": "weeks",
+      "granularity": "weekly"
+    },
+    {
+      "id": "peak",
+      "label": "peak / week",
+      "unit": "commits/week",
+      "source": "peak_week",
+      "granularity": "weekly"
+    },
+    {
+      "id": "contributors",
+      "label": "contributors",
+      "unit": "people",
+      "source": "contributors",
+      "granularity": "static"
+    },
+    {
+      "id": "stars",
+      "label": "stars",
+      "unit": "stars",
+      "source": "stars",
+      "granularity": "static"
+    },
+    {
+      "id": "forks",
+      "label": "forks",
+      "unit": "forks",
+      "source": "forks",
+      "granularity": "static"
+    },
+    {
+      "id": "community",
+      "label": "community / 12w",
+      "unit": "commits",
+      "source": "community_last12",
+      "granularity": "12 weeks"
+    },
+    {
+      "id": "owner",
+      "label": "owner / 12w",
+      "unit": "commits",
+      "source": "owner_last12",
+      "granularity": "12 weeks"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s0_hook",
+      "focus": "hero",
+      "claim": "one of the most starred open source projects",
+      "bind": [
+        "stars"
+      ],
+      "t0": 0.0,
+      "t1": 4.288,
+      "voice": "M2",
+      "narration": "This is Hermes Agent. One of the most starred open source projects on GitHub."
+    },
+    {
+      "id": "s1_scale",
+      "focus": "stat:stars",
+      "claim": "stars, forks and contributors",
+      "bind": [
+        "stars",
+        "forks",
+        "contributors"
+      ],
+      "t0": 4.288,
+      "t1": 13.461333,
+      "voice": "F2",
+      "narration": "265,233 stars. 59,957 forks. 6,625 contributors."
+    },
+    {
+      "id": "s2_volume",
+      "focus": "stat:commits",
+      "claim": "commits across active weeks",
+      "bind": [
+        "total_commits",
+        "active_weeks",
+        "weeks"
+      ],
+      "t0": 13.461333,
+      "t1": 18.922667,
+      "voice": "M2",
+      "narration": "In the last fifty two weeks: 80,146 commits across 47 active weeks."
+    },
+    {
+      "id": "s3_peak",
+      "focus": "stat:peak",
+      "claim": "busiest week",
+      "bind": [
+        "peak_week",
+        "peak_date"
+      ],
+      "t0": 18.922667,
+      "t1": 25.002667,
+      "voice": "F2",
+      "narration": "The busiest week: 9,113 commits, starting 2026-11-08."
+    },
+    {
+      "id": "s4_community",
+      "focus": "stat:community",
+      "claim": "community commits in twelve weeks",
+      "bind": [
+        "community_last12"
+      ],
+      "t0": 25.002667,
+      "t1": 30.666667,
+      "voice": "M2",
+      "narration": "Here is the proof it is truly open: 48,011 community commits in the last twelve weeks."
+    },
+    {
+      "id": "s5_owner",
+      "focus": "stat:owner",
+      "claim": "owner wrote zero",
+      "bind": [
+        "owner_last12"
+      ],
+      "t0": 30.666667,
+      "t1": 35.264,
+      "voice": "F2",
+      "narration": "The owner wrote 0 commits in that same period. The community carried the work."
+    },
+    {
+      "id": "s6_close",
+      "focus": "hero",
+      "claim": "open source at global scale",
+      "bind": [
+        "contributors"
+      ],
+      "t0": 35.264,
+      "t1": 41.28,
+      "voice": "M2",
+      "narration": "One human starts a project. Thousands of people make it a standard. That is open source at global scale."
+    }
+  ],
+  "note": "Declarative presentation contract. Every claim binds to a derived field. Gate before render."
+}

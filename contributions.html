@@ -26,7 +26,7 @@
   .card .value.cyan{color:var(--cyan)}
   .panel{border:1px solid #2b4a66;background:#12233a;padding:18px;margin-bottom:16px}
   .panel h2{font-size:10px;color:var(--muted);letter-spacing:.18em;margin:0 0 16px;font-weight:400}
-  #grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,11px);
+  #grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(1,11px);
     gap:3px;overflow-x:auto;padding-bottom:8px}
   .cell.hidden{opacity:0.06}
   .cell{width:11px;height:11px;background:#1a2a3d;border:1px solid #24384f}
@@ -45,6 +45,7 @@
     box-shadow:0 0 24px #FFD755;z-index:99}
   #head{position:fixed;top:0;bottom:0;width:3px;background:#FFD755;
     box-shadow:0 0 36px 8px #FFD75588;z-index:98;opacity:0.85}
+  .controls{display:none}
   footer{margin-top:24px;border-top:1px solid #1b2733;padding-top:14px;
     font-size:9px;color:var(--muted);line-height:1.8}
 </style>
@@ -60,17 +61,17 @@
     <div class="status" id="status">LOADING…</div>
   </header>
   <div class="stats">
-    <div class="card"><div class="label">total contributions</div><div class="value" id="s-total">—</div></div>
-    <div class="card"><div class="label">active days</div><div class="value cyan" id="s-active">—</div></div>
+    <div class="card"><div class="label">commits so far</div><div class="value" id="s-total">—</div></div>
+    <div class="card"><div class="label">active weeks</div><div class="value cyan" id="s-active">—</div></div>
     <div class="card"><div class="label">weeks</div><div class="value cyan" id="s-weeks">—</div></div>
-    <div class="card"><div class="label">max / day</div><div class="value" id="s-max">—</div></div>
+    <div class="card"><div class="label">peak / week</div><div class="value" id="s-max">—</div></div>
   </div>
   <div class="panel">
-    <h2>CALENDAR · <span id="range">—</span></h2>
+    <h2>COMMITS ACCUMULATING · <span id="range">—</span></h2>
     <div id="grid"></div>
     <div class="legend">less
       <i style="background:#10161f"></i><i class="n1"></i><i class="n2"></i><i class="n3"></i><i class="n4"></i>
-      more · each cell = one week
+      more · one column = one week · 52 columns
     </div>
   </div>
   <div class="panel">

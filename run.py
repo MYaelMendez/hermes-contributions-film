@@ -34,6 +34,21 @@ def find_ffmpeg(explicit:str|None):
     if w: return Path(w).parent
     raise SystemExit('MISSING: ffmpeg — pass --ffmpeg-dir DIR')
 
+
+def _tinyffmpeg_gate(path):
+    """Bind the artifact to the build that encoded it (tinyffmpeg.integrate).
+    Fail-closed: a file that exists is not an encode."""
+    try:
+        import importlib.util
+        p = Path(r"C:\æ\tinyffmpeg\integrate.py")
+        if not p.exists():
+            return {"ok": False, "refusal": "tinyffmpeg.integrate no encontrado"}
+        spec = importlib.util.spec_from_file_location("tinyffmpeg_integrate", p)
+        m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        return m.gate(path)
+    except Exception as e:
+        return {"ok": False, "refusal": f"{type(e).__name__}: {e}"}
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--repo',required=True,help='owner/repo, e.g. NousResearch/hermes-agent')
@@ -152,6 +167,7 @@ def main():
         r=sh([a.gate_python,str(Path(r'C:/æ/vidæo/vidæo.py')),'verify',str(final)],timeout=300)
         gate={'status':'PASS' if 'PASS' in (r.stdout+r.stderr) else 'FAIL','raw':(r.stdout+r.stderr)[:600]}
     rec={'artifact':final.name,'sha256':hashlib.sha256(b).hexdigest(),
+         'codec_gate':_tinyffmpeg_gate(final),
          'source':'contributions-film #opensourceware · derived from GitHub GraphQL',
          'repo':a.repo,'voice':{'engine':'tiny-voca','seed':42,'segments':len(man['segments'])},
          'picture':{'fps':fps,'duration_s':picture,'frames':total,'codec':codec},

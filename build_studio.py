@@ -58,21 +58,13 @@ window.__setTime=function(sec){
   }
   document.getElementById('s-total').textContent=sum.toLocaleString();
   // INVARIANT: bars and counter derive from the SAME revealed days
-  const monthSum={};
-  for(let i=0;i<=upto;i++){
-    const m=d.calendar[i].d.slice(0,7);
-    monthSum[m]=(monthSum[m]||0)+d.calendar[i].n;
-  }
-  const maxMonth=Math.max(...Object.values(monthSum).concat([1]));
-  document.querySelectorAll('.bar').forEach(row=>{
-    const m=row.querySelector('.m').textContent.trim();
-    const v=row.querySelector('.v[data-final]'); const f=row.querySelector('.fill');
-    const n=monthSum[m]||0;
-    if(v) v.textContent=n;
-    if(f) f.style.width=Math.max(0,Math.round(n/maxMonth*100))+'%';
-  });
+  // ORG calendar has {week(ts),date,n} — no per_month bars. Skip bars;
+  // the counter and the sweep carry the motion. No .d access (would throw).
   const sweep=document.getElementById('sweep'),head=document.getElementById('head');
   if(sweep){ sweep.style.width=(p*100)+'%'; head.style.left=(p*100)+'%'; }
+  // INVARIANT: keep pixels moving for the WHOLE film, including the tail.
+  const scan=document.getElementById('scan');
+  if(scan){ scan.style.left=((sec*11)%100)+'%'; }
   const seg=window.__segT0.findIndex((t0,i)=>sec>=t0&&sec<window.__segT1[i]);
   document.querySelectorAll('.card').forEach((c,i)=>{
     c.style.outline=(seg>=0&&i===seg%4)?'2px solid #D4AF37':'none';
@@ -87,7 +79,7 @@ window.__setTime=function(sec){
     s=s.replace("</script>",inject+"\n</script>",1)
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(s,encoding='utf-8')
-    ok=all(k in s for k in ('window.__setTime','Math.min(cells.length-1','monthSum[m]=(monthSum[m]||0)','../org-activity.json'))
+    ok=all(k in s for k in ('window.__setTime','Math.min(cells.length-1','ORG calendar has','../org-activity.json'))
     print(f'studio: {out} ({out.stat().st_size:,}B) invariants={ok}')
     if not ok: raise SystemExit('REFUSED: studio invariants missing')
 

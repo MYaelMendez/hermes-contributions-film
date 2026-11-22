@@ -40,6 +40,7 @@
   .bar .track{height:8px;background:#10161f;position:relative}
   .bar .fill{height:100%;background:linear-gradient(90deg,#14606a,var(--gold))}
   .bar .v{text-align:right;color:#cdd6dd}
+  #scan{position:fixed;top:0;bottom:0;width:100px;background:#00eaff;z-index:97;opacity:0.55}
   #sweep{position:fixed;left:0;bottom:0;height:10px;background:linear-gradient(90deg,#14606a,#FFD755);
     box-shadow:0 0 24px #FFD755;z-index:99}
   #head{position:fixed;top:0;bottom:0;width:3px;background:#FFD755;
@@ -49,7 +50,7 @@
 </style>
 </head>
 <body>
-<div id="sweep"></div><div id="head"></div>
+<div id="scan"></div><div id="sweep"></div><div id="head"></div>
 <div class="wrap">
   <header>
     <div>
@@ -85,13 +86,14 @@ fetch('./org-activity.json',{cache:'no-cache'})
  .then(d=>{
    if(!d||d.schema!=='ae/github-org-activity/1'){document.getElementById('status').textContent='REFUSED';return;}
    document.getElementById('status').textContent='DERIVED · OK';
-   document.getElementById('sub').textContent=d.repo+' · '+d.contributors.toLocaleString()+' contributors · derived from public GitHub REST';
+   document.getElementById('sub').textContent=d.repo+' · '+d.contributors.toLocaleString()+' contributors · ★'+d.stars.toLocaleString()+' · ⑂'+d.forks.toLocaleString()+' · derived from public REST';
    document.getElementById('who').textContent=d.repo;
    document.getElementById('s-total').textContent=d.total_commits.toLocaleString();
    document.getElementById('s-active').textContent=d.active_weeks+' / '+d.weeks;
    document.getElementById('s-weeks').textContent=d.weeks;
    document.getElementById('s-max').textContent=d.peak_week.toLocaleString();
-   document.getElementById('range').textContent=d.first_day+' → '+d.last_day;
+   const barsPanel=document.getElementById('bars')?.closest('.panel'); if(barsPanel && !d.per_month) barsPanel.style.display='none';
+   document.getElementById('range').textContent=(d.first_day||d.calendar[0].date)+' → '+(d.last_day||d.calendar[d.calendar.length-1].date);
    const grid=document.getElementById('grid'); window.__cells=[];
    d.calendar.forEach(c=>{
      const el=document.createElement('div');

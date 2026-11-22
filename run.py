@@ -91,7 +91,7 @@ def main():
     studio=work/'studio.html'
     r=sh([PY,str(HERE/'build_studio.py'),'--template',str(HERE/'contributions.html'),
           '--out',str(studio),'--manifest',str(work/'voice-manifest.json'),
-          '--reveal',str(max(1.0,picture-10))])
+          '--reveal',str(picture)])
     if r.returncode: raise SystemExit(r.stdout+r.stderr)
     print(r.stdout.strip())
 

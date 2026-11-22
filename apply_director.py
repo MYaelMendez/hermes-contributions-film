@@ -8,6 +8,15 @@ from __future__ import annotations
 import argparse, json
 from pathlib import Path
 
+
+LEGACY = {'commits':'s-total', 'active':'s-active', 'weeks':'s-weeks', 'peak':'s-max'}
+
+def _legacy_id(stat_id):
+    # the template's fetch writes to s-total/s-active/s-weeks/s-max.
+    # Keep those ids present so the derived data still populates the cards.
+    lid = LEGACY.get(stat_id)
+    return f' id="{lid}"' if lid else ''
+
 DIRECTOR = """
 // ===== SCENE DIRECTOR (generated from story-spec.json) =====
 window.__SCENES=__SCENES__;
@@ -58,6 +67,10 @@ def apply(studio: Path, spec: Path, out: Path):
     pop='\n'.join(
       f"   document.getElementById('o-{st['id']}').textContent=d.{st['source']}.toLocaleString();"
       for st in d['stats'])
+    # the template's fetch writes to s-total/s-active/s-weeks/s-max.
+    # Redirect those writes to our directed card ids so no null.textContent.
+    for legacy,stat in [('s-total','commits'),('s-active','active'),('s-weeks','weeks'),('s-max','peak')]:
+        s=s.replace(f"getElementById('{legacy}')", f"getElementById('o-{stat}')")
     s=s.replace('   window.__data=d;',pop+'\n   window.__data=d;')
     s=s.replace('<div class="status" id="status">LOADING…</div>',
       '<div class="status" id="status">LOADING…</div>\n'
